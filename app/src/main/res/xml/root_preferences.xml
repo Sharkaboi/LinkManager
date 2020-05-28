@@ -1,0 +1,41 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/sync_header">
+
+        <Preference
+            android:enabled="false"
+            android:icon="@drawable/ic_sync"
+            app:key="syncOption"
+            app:title="Sync with Firebase anonymously" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Appearance">
+
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_bulb"
+            app:key="darkTheme"
+            app:title="Dark Theme" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="About">
+        <Preference
+            android:icon="@drawable/ic_info_settings"
+            app:key="versionCode"
+            app:summary="1.0"
+            app:title="@string/app_name" />
+
+        <Preference
+            android:icon="@drawable/ic_download"
+            app:key="releases"
+            app:summary="Check for new releases!"
+            app:title="Releases">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Sharkaboi/LinkManager" />
+        </Preference>
+    </PreferenceCategory>
+
+</PreferenceScreen>

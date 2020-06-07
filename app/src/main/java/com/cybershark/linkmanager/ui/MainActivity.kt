@@ -88,5 +88,4 @@ class MainActivity : AppCompatActivity() {
         drawer_layout.addDrawerListener(toggleOptions)
         toggleOptions.syncState()
     }
-
 }

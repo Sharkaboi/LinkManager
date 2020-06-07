@@ -30,13 +30,9 @@ class LinksViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun updateLink(linkEntity: LinkEntity?) {
+    fun updateLink(pk: Int, linkName: String, linkURL: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (linkEntity != null) {
-                repository.updateLink(linkEntity)
-            } else {
-                Log.e("viewmodel", "updateLink: Failed as link entity was null")
-            }
+            repository.updateLink(LinkEntity(pk, linkName, linkURL))
             Log.e("viewmodel", "updateLink: called")
         }
     }

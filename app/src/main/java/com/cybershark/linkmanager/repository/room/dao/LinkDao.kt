@@ -21,15 +21,15 @@ interface LinkDao {
 
     //get link by name
     @Query("select * from links where linkName like '%' || :linkName || '%'")
-    suspend fun getLinkByName(linkName : String) : LinkEntity
+    suspend fun getLinkByName(linkName: String): LinkEntity
 
     //get link by pk
     @Query("select * from links where pk=:pk")
-    suspend fun getLinkByName(pk : Int) : LinkEntity
+    suspend fun getLinkByName(pk: Int): LinkEntity
 
     //get all links
     @Query("select * from links")
-    fun getAllLinks() : LiveData<List<LinkEntity>>
+    fun getAllLinks(): LiveData<List<LinkEntity>>
 
     //clear all links
     @Query("delete from links")

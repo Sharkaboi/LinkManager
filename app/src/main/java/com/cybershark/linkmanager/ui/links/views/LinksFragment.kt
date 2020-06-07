@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,7 @@ import com.cybershark.linkmanager.ui.links.viewmodels.LinksViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_links.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -76,6 +78,7 @@ class LinksFragment : Fragment(), LinksAdapter.EditButtonListener {
         when (item.itemId) {
             R.id.action_settings -> openSettingsActivity()
             R.id.action_share -> openShareDialog()
+            android.R.id.home -> activity?.drawer_layout?.openDrawer(GravityCompat.START)
         }
         return true
     }
@@ -98,12 +101,14 @@ class LinksFragment : Fragment(), LinksAdapter.EditButtonListener {
             .setPositiveButton(getString(R.string.update)) { _, _ ->
                 val name = etLinkName.text.toString()
                 val url = etLinkURL.text.toString()
+                val pk = linksViewModel.linksList.value?.get(position)?.pk?:0
                 if (name.isBlank() || url.isBlank()) {
                     Toast.makeText(context, "Enter Something!", Toast.LENGTH_SHORT).show()
                 } else {
+                    Log.e("linksfragment", "onEditClick: $position $link" )
                     contentLoadingScreen.visibility = View.VISIBLE
                     Toast.makeText(context, "Updating item", Toast.LENGTH_SHORT).show()
-                    linksViewModel.updateLink(link)
+                    linksViewModel.updateLink(pk,name,url)
                     contentLoadingScreen.visibility = View.GONE
                 }
             }

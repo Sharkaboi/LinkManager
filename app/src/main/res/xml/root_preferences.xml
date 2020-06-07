@@ -1,19 +1,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <PreferenceCategory app:title="@string/sync_header">
 
         <Preference
-            android:enabled="false"
             android:icon="@drawable/ic_sync"
             app:key="syncOption"
-            app:title="Sync with Firebase anonymously" />
+            app:title="Set to sync App data through Google" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Reset">
+
+        <Preference
+            android:icon="@drawable/ic_delete"
+            android:title="@string/delete_links"
+            app:key="deleteAllLinks" />
 
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Appearance">
 
         <SwitchPreferenceCompat
+            android:enabled="false"
             android:icon="@drawable/ic_bulb"
             app:key="darkTheme"
             app:title="Dark Theme" />
@@ -24,8 +34,12 @@
         <Preference
             android:icon="@drawable/ic_info_settings"
             app:key="versionCode"
-            app:summary="1.0"
-            app:title="@string/app_name" />
+            app:title="@string/app_name"
+            tools:summary="1.0">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Sharkaboi/LinkManager" />
+        </Preference>
 
         <Preference
             android:icon="@drawable/ic_download"
@@ -34,7 +48,7 @@
             app:title="Releases">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://github.com/Sharkaboi/LinkManager" />
+                android:data="https://github.com/Sharkaboi/LinkManager/releases" />
         </Preference>
     </PreferenceCategory>
 

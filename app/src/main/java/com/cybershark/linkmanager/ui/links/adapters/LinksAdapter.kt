@@ -8,65 +8,98 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.getSystemService
+import android.widget.*
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.cybershark.linkmanager.R
 import com.cybershark.linkmanager.repository.room.entities.LinkEntity
 import com.cybershark.linkmanager.ui.links.util.LinksDiffUtilItemCallback
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class LinksAdapter(private val context: Context) : RecyclerView.Adapter<LinksAdapter.LinksViewHolder>() {
+class LinksAdapter(
+    private val context: Context,
+    private val editButtonListener: EditButtonListener
+) : RecyclerView.Adapter<LinksAdapter.LinksViewHolder>() {
 
-    class LinksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class LinksViewHolder(itemView: View, private val editButtonListener: EditButtonListener) :
+        RecyclerView.ViewHolder(itemView) {
         private val tvLinkName = itemView.findViewById<TextView>(R.id.tvLinkName)!!
         private val tvLinkURL = itemView.findViewById<TextView>(R.id.tvLinkURL)!!
-        private val ivFavIcon = itemView.findViewById<ImageView>(R.id.ivFavIcon)!!
-        private val ibShareURL = itemView.findViewById<ImageButton>(R.id.ibShareURL)!!
-        private val ibEditLink = itemView.findViewById<ImageButton>(R.id.ibEditLink)!!
+        private val ibShareURL = itemView.findViewById<Button>(R.id.ibShareURL)!!
+        private val ibEditLink = itemView.findViewById<Button>(R.id.ibEditLink)!!
+        private val optionsMenu = itemView.findViewById<LinearLayout>(R.id.optionsMenu)!!
+        private val ibOpenOptions = itemView.findViewById<ImageButton>(R.id.ibOpenOptions)!!
 
-        fun bind(linkEntity: LinkEntity,context: Context){
+        fun bind(linkEntity: LinkEntity, context: Context) {
             tvLinkName.text = linkEntity.linkName
             tvLinkURL.text = linkEntity.linkURL
-            Glide.with(ivFavIcon.context).asBitmap().load(linkEntity.linkFavIconURL).error(R.drawable.ic_link).into(ivFavIcon)
+            optionsMenu.visibility = View.GONE
+            Glide.with(ibOpenOptions.context)
+                .load(R.drawable.ic_arrow_down)
+                .into(ibOpenOptions)
+
+            ibOpenOptions.setOnClickListener {
+                when (optionsMenu.visibility) {
+                    View.VISIBLE -> {
+                        TransitionManager.beginDelayedTransition(optionsMenu, AutoTransition())
+                        optionsMenu.visibility = View.GONE
+                        Glide.with(ibOpenOptions.context)
+                            .load(R.drawable.ic_arrow_down)
+                            .into(ibOpenOptions)
+                    }
+                    View.GONE -> {
+                        TransitionManager.beginDelayedTransition(optionsMenu, AutoTransition())
+                        optionsMenu.visibility = View.VISIBLE
+                        Glide.with(ibOpenOptions.context)
+                            .load(R.drawable.ic_arrow_up)
+                            .into(ibOpenOptions)
+                    }
+                }
+            }
             ibShareURL.setOnClickListener {
                 val message = "Check me out on ${linkEntity.linkName}!\n${linkEntity.linkURL}"
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
-                shareIntent.putExtra(Intent.EXTRA_TEXT,message)
-                context.startActivity(Intent.createChooser(shareIntent,context.getString(R.string.share)))
+                shareIntent.putExtra(Intent.EXTRA_TEXT, message)
+                context.startActivity(
+                    Intent.createChooser(
+                        shareIntent,
+                        context.getString(R.string.share)
+                    )
+                )
             }
             ibEditLink.setOnClickListener {
-                //todo open dialog
-
+                editButtonListener.onEditClick(adapterPosition)
             }
+
             tvLinkURL.setOnClickListener {
                 try {
                     val browserIntent = Intent(Intent.ACTION_VIEW)
                     browserIntent.data = Uri.parse(linkEntity.linkURL)
                     context.startActivity(browserIntent)
-                    Toast.makeText(tvLinkURL.context,"Opening Link",Toast.LENGTH_SHORT).show()
-                }catch (ex:Exception){
-                    Toast.makeText(tvLinkURL.context,"Invalid Link",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(tvLinkURL.context, "Opening Link", Toast.LENGTH_SHORT).show()
+                } catch (ex: Exception) {
+                    Toast.makeText(tvLinkURL.context, "Invalid Link", Toast.LENGTH_SHORT).show()
                     ex.printStackTrace()
                 }
             }
             tvLinkURL.setOnLongClickListener {
-                val clipBoardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                clipBoardManager.setPrimaryClip(ClipData.newPlainText("link",linkEntity.linkURL))
-                Toast.makeText(tvLinkURL.context,"Link Copied!",Toast.LENGTH_SHORT).show()
+                val clipBoardManager =
+                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipBoardManager.setPrimaryClip(ClipData.newPlainText("link", linkEntity.linkURL))
+                Toast.makeText(tvLinkURL.context, "Link Copied!", Toast.LENGTH_SHORT).show()
                 true
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
-        return LinksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.link_item, parent, false))
+        return LinksViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.link_item, parent, false),
+            editButtonListener
+        )
     }
 
     override fun getItemCount(): Int {
@@ -74,12 +107,16 @@ class LinksAdapter(private val context: Context) : RecyclerView.Adapter<LinksAda
     }
 
     override fun onBindViewHolder(holder: LinksViewHolder, position: Int) {
-        holder.bind(listDiffer.currentList[position],context)
+        holder.bind(listDiffer.currentList[position], context)
     }
 
     private val listDiffer = AsyncListDiffer(this, LinksDiffUtilItemCallback)
 
     fun setList(itemsList: List<LinkEntity>) {
         listDiffer.submitList(itemsList)
+    }
+
+    interface EditButtonListener {
+        fun onEditClick(position: Int)
     }
 }

@@ -30,10 +30,10 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvSignedInHint"
+        android:id="@+id/tvVersionID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
-        tools:text="@string/not_signed_in" />
+        tools:text="1.1" />
 
 </LinearLayout>

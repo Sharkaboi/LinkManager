@@ -7,17 +7,22 @@ import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.cybershark.linkmanager.BuildConfig
 import com.cybershark.linkmanager.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.toolbar
+import kotlinx.android.synthetic.main.settings_activity.*
 
 class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+        setSupportActionBar(toolbar)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.settings, SettingsFragment())
@@ -53,6 +58,17 @@ class SettingsActivity : AppCompatActivity() {
             setVersionCode()
             setDeleteOnClick()
             setSyncOptionPrefs()
+            setDarkThemePrefs()
+        }
+
+        private fun setDarkThemePrefs() {
+            findPreference<Preference>("darkTheme")?.setOnPreferenceChangeListener { _, newValue ->
+                if (newValue as Boolean)
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                true
+            }
         }
 
         private fun setSyncOptionPrefs() {

@@ -13,10 +13,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
-
     <style name="splashStyle" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="android:fitsSystemWindows">true</item>

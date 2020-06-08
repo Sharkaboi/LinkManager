@@ -3,12 +3,15 @@ package com.cybershark.linkmanager.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import com.cybershark.linkmanager.BuildConfig
 import com.cybershark.linkmanager.R
 import com.cybershark.linkmanager.repository.constants.Constants

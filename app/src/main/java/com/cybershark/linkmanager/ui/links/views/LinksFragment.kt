@@ -160,7 +160,7 @@ class LinksFragment : Fragment(), LinksAdapter.EditButtonListener {
                     isCurrentlyActive
                 )
                     .addBackgroundColor(Color.RED)
-                    .addActionIcon(R.drawable.ic_delete)
+                    .addActionIcon(R.drawable.ic_delete_white)
                     .create()
                     .decorate()
 

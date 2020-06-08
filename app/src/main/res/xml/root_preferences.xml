@@ -23,7 +23,6 @@
     <PreferenceCategory app:title="Appearance">
 
         <SwitchPreferenceCompat
-            android:enabled="false"
             android:icon="@drawable/ic_bulb"
             app:key="darkTheme"
             app:title="Dark Theme" />

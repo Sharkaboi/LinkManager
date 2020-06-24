@@ -20,5 +20,8 @@ An app to keep track of all your links.
 * Upcoming : Share the list with a single link
 * Upcoming : Have multiple lists of links.
 
+## Screenshots
+![Showcase](https://i.imgur.com/ljlpUTR.png)
+
 ## Releases
 Check out all the releases [here](https://github.com/Sharkaboi/LinkManager/releases)

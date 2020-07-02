@@ -35,5 +35,4 @@ abstract class LinksDB : RoomDatabase() {
             linksSQLiteDB = null
         }
     }
-
 }

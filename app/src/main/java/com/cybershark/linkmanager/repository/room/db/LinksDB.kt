@@ -30,7 +30,10 @@ abstract class LinksDB : RoomDatabase() {
             }
         }
 
-        fun closeDB() = linksSQLiteDB?.close()
+        fun closeDB() { 
+            linksSQLiteDB?.close()
+            linksSQLiteDB = null
+        }
     }
 
 }

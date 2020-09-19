@@ -1,9 +1,14 @@
-package com.cybershark.linkmanager.repository
+package com.cybershark.linkmanager.data.repositories
 
-import com.cybershark.linkmanager.repository.room.dao.LinkDao
-import com.cybershark.linkmanager.repository.room.entities.LinkEntity
+import android.content.Context
+import com.cybershark.linkmanager.data.room.dao.LinkDao
+import com.cybershark.linkmanager.data.room.entities.LinkEntity
 
-class Repository(private val linksDao: LinkDao) {
+class MainRepository
+constructor(
+    private val linksDao: LinkDao,
+    context: Context
+) {
 
     val allLinks = linksDao.getAllLinks()
 

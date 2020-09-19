@@ -1,58 +1,56 @@
 package com.cybershark.linkmanager.ui.links.viewmodels
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.viewModelScope
-import com.cybershark.linkmanager.repository.Repository
-import com.cybershark.linkmanager.repository.room.db.LinksDB
-import com.cybershark.linkmanager.repository.room.entities.LinkEntity
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
+import com.cybershark.linkmanager.data.repositories.MainRepository
+import com.cybershark.linkmanager.data.room.entities.LinkEntity
+import com.cybershark.linkmanager.util.UIState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LinksViewModel(application: Application) : AndroidViewModel(application) {
+class LinksViewModel
+@ViewModelInject
+constructor(
+    @Assisted savedStateHandle: SavedStateHandle,
+    private val mainRepository: MainRepository
+) : ViewModel() {
 
-    private val repository by lazy { Repository(linksDao) }
-    private val linksDao by lazy { LinksDB.getDatabaseInstance(getApplication()).getDAO() }
-
-    var linksList: LiveData<List<LinkEntity>> = repository.allLinks
-
-    override fun onCleared() {
-        super.onCleared()
-        closeDB()
-        Log.e("viewmodel", "onCleared:called ")
-    }
+    var linksList: LiveData<List<LinkEntity>> = mainRepository.allLinks
+    private val _uiState = MutableLiveData<UIState>().apply { value = UIState.IDLE }
+    val uiState: LiveData<UIState> = _uiState
 
     fun addLink(linkName: String, linkURL: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertLink(LinkEntity(linkName = linkName, linkURL = linkURL))
+            mainRepository.insertLink(LinkEntity(linkName = linkName, linkURL = linkURL))
         }
     }
 
-    fun updateLink(pk: Int, linkName: String, linkURL: String) {
+    fun updateLink(newItem: LinkEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.updateLink(LinkEntity(pk, linkName, linkURL))
+            mainRepository.updateLink(newItem)
             Log.e("viewmodel", "updateLink: called")
         }
     }
 
     fun deleteLink(linkEntity: LinkEntity) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteLink(linkEntity)
+            mainRepository.deleteLink(linkEntity)
             Log.e("viewmodel", "deleteLink: called")
         }
     }
 
     fun deleteAllLinks() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteAllLinks()
+            mainRepository.deleteAllLinks()
             Log.e("viewmodel", "deleteAllLinks: deleted!")
         }
     }
 
-    private fun closeDB() {
-        LinksDB.closeDB()
+    fun getLinkByPK(pk: Int): LinkEntity? {
+        return linksList.value?.first { linkEntity ->
+            linkEntity.pk == pk
+        }
     }
-
 }

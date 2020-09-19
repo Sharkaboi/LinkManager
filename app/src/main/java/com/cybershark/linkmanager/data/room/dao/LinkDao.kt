@@ -1,8 +1,8 @@
-package com.cybershark.linkmanager.repository.room.dao
+package com.cybershark.linkmanager.data.room.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.cybershark.linkmanager.repository.room.entities.LinkEntity
+import com.cybershark.linkmanager.data.room.entities.LinkEntity
 
 @Dao
 interface LinkDao {
@@ -16,7 +16,7 @@ interface LinkDao {
     suspend fun deleteLink(linkEntity: LinkEntity)
 
     //update link entity
-    @Update
+    @Update(onConflict = OnConflictStrategy.ABORT)
     suspend fun updateLink(linkEntity: LinkEntity)
 
     //get link by name
@@ -25,7 +25,7 @@ interface LinkDao {
 
     //get link by pk
     @Query("select * from links where pk=:pk")
-    suspend fun getLinkByName(pk: Int): LinkEntity
+    suspend fun getLinkByID(pk: Int): LinkEntity
 
     //get all links
     @Query("select * from links")

@@ -29,9 +29,11 @@
     <string name="edit">Edit</string>
     <string name="about_detailed">An app to keep track of all your links.\n\nFeatures : \n\n* Can share all links in one go,\n* Upcoming : Bitly api integration,\n* Upcoming : Firebase Sync,\n* Upcoming : Share all links as a PDF,\n* Upcoming : Share the list with a single link,\n* Upcoming : Have multiple lists of links.\n</string>
     <string name="delete_links">Delete All Links</string>
-    <string name="delete">delete</string>
+    <string name="delete">Delete</string>
     <string name="delete_alert">All links will be deleted! This is a permanent and cannot be reverted!</string>
     <string name="update">Update</string>
     <string name="undo">Undo</string>
+    <string name="bug_report_detailed">Report issues here!</string>
+    <string name="confirm">Confirm</string>
 
 </resources>

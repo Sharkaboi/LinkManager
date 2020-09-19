@@ -5,14 +5,20 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import com.cybershark.linkmanager.ui.main.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setDarkOrLightTheme()
+        openMainActivity()
+
+    }
+
+    private fun openMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finishAffinity()
-        setDarkOrLightTheme()
     }
 
     private fun setDarkOrLightTheme() {

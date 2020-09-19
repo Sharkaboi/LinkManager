@@ -1,4 +1,4 @@
-package com.cybershark.linkmanager.repository.room.entities
+package com.cybershark.linkmanager.data.room.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

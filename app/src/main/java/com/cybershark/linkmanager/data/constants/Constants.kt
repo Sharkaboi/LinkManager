@@ -1,4 +1,4 @@
-package com.cybershark.linkmanager.repository.constants
+package com.cybershark.linkmanager.data.constants
 
 class Constants {
     companion object{

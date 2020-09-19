@@ -41,6 +41,16 @@
         </Preference>
 
         <Preference
+            android:icon="@drawable/ic_bug_report"
+            app:key="bugReport"
+            app:summary="@string/bug_report_detailed"
+            app:title="@string/bug_report">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/Sharkaboi/LinkManager/issues" />
+        </Preference>
+
+        <Preference
             android:icon="@drawable/ic_download"
             app:key="releases"
             app:summary="Check for new releases!"

@@ -22,8 +22,10 @@ constructor(
     val uiState: LiveData<UIState> = _uiState
 
     fun addLink(linkName: String, linkURL: String) {
+        _uiState.value = UIState.LOADING
         viewModelScope.launch(Dispatchers.IO) {
-            mainRepository.insertLink(LinkEntity(linkName = linkName, linkURL = linkURL))
+            val result = mainRepository.insertLink(LinkEntity(linkName = linkName, linkURL = linkURL))
+            if(re)
         }
     }
 

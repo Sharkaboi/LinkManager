@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.cybershark.linkmanager.R
 import com.cybershark.linkmanager.data.room.entities.LinkEntity
 import com.cybershark.linkmanager.databinding.LinkItemBinding
-import com.cybershark.linkmanager.ui.links.util.LinksDiffUtilItemCallback
 
 
 class LinksAdapter(
@@ -17,7 +17,17 @@ class LinksAdapter(
 ) : RecyclerView.Adapter<LinksAdapter.LinksViewHolder>() {
 
     private lateinit var binding: LinkItemBinding
-    private val listDiffer = AsyncListDiffer(this, LinksDiffUtilItemCallback)
+
+    private val linksDiffUtilItemCallback = object : DiffUtil.ItemCallback<LinkEntity>() {
+        override fun areItemsTheSame(oldItem: LinkEntity, newItem: LinkEntity): Boolean {
+            return oldItem.pk == newItem.pk
+        }
+
+        override fun areContentsTheSame(oldItem: LinkEntity, newItem: LinkEntity): Boolean {
+            return oldItem == newItem
+        }
+    }
+    private val listDiffer = AsyncListDiffer(this, linksDiffUtilItemCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinksViewHolder {
         binding = LinkItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -39,10 +49,13 @@ class LinksAdapter(
     class LinksViewHolder(private val binding: LinkItemBinding, private val customListeners: CustomListeners) :
         RecyclerView.ViewHolder(binding.root) {
 
+
         fun bind(item: LinkEntity) {
+
             binding.tvLinkName.text = item.linkName
             binding.tvLinkURL.text = item.linkURL
-            binding.ivFavicon.load(item.linkURL){
+            //todo:get favicon from url
+            binding.ivFavicon.load(item.linkURL) {
                 error(R.drawable.ic_link)
             }
 

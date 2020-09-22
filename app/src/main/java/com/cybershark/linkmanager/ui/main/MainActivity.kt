@@ -3,8 +3,8 @@ package com.cybershark.linkmanager.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.*
-import androidx.navigation.ui.NavigationUI.navigateUp
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.cybershark.linkmanager.BuildConfig
 import com.cybershark.linkmanager.R
 import com.cybershark.linkmanager.databinding.ActivityMainBinding
@@ -32,11 +32,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpNavigationDrawer() {
         binding.navView.setupWithNavController(navController)
-        binding.toolbar.setupWithNavController(navController,appBarConfiguration)
+        binding.toolbar.setupWithNavController(navController, appBarConfiguration)
         setVersionCodeInNavBar()
     }
 
     private fun setVersionCodeInNavBar() {
-        headerBinding.tvVersionID.text = ("v " + BuildConfig.VERSION_NAME)
+        headerBinding.tvVersionID.text = buildString {
+            append("v ")
+            append(BuildConfig.VERSION_NAME)
+        }
     }
 }

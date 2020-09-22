@@ -18,6 +18,6 @@ internal suspend fun List<LinkEntity>.getListAsFriendlyMessage(): String = withC
     }
 }
 
-internal fun Any?.isNotNull(): Boolean {
-    return this != null
+internal inline fun <T:Any, R> ifNotNull(input: T?, callback: (T)->R): R? {
+    return input?.let(callback)
 }

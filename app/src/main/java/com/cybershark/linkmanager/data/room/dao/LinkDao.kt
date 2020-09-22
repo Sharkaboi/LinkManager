@@ -9,15 +9,15 @@ interface LinkDao {
 
     //insert link entity
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertLink(linkEntity: LinkEntity)
+    suspend fun insertLink(linkEntity: LinkEntity): Long
 
     //delete link entity
     @Delete
-    suspend fun deleteLink(linkEntity: LinkEntity)
+    suspend fun deleteLink(linkEntity: LinkEntity): Int
 
     //update link entity
     @Update(onConflict = OnConflictStrategy.ABORT)
-    suspend fun updateLink(linkEntity: LinkEntity)
+    suspend fun updateLink(linkEntity: LinkEntity): Int
 
     //get link by name
     @Query("select * from links where linkName like '%' || :linkName || '%'")
@@ -33,6 +33,6 @@ interface LinkDao {
 
     //clear all links
     @Query("delete from links")
-    suspend fun deleteAllLinks()
+    suspend fun deleteAllLinks(): Int
 
 }

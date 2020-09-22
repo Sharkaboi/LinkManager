@@ -72,6 +72,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setVersionCode() {
-        findPreference<Preference>("versionCode")?.summary = BuildConfig.VERSION_NAME
+        findPreference<Preference>("versionCode")?.summary = buildString {
+            append("v ")
+            append(BuildConfig.VERSION_NAME)
+        }
     }
 }

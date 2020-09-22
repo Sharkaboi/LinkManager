@@ -1,6 +1,7 @@
 package com.cybershark.linkmanager.ui.links.edit
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +17,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class EditLinkDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentEditDialogBinding
+    private var _binding: FragmentEditDialogBinding? = null
+    private val binding get() = _binding!!
     private val linksViewModel by viewModels<LinksViewModel>()
     private val args: EditLinkDialogArgs by navArgs()
     private val pk: Int by lazy { args.pk }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentEditDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentEditDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,6 +32,11 @@ class EditLinkDialog : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupData()
         setupListeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupData() {
@@ -50,6 +57,8 @@ class EditLinkDialog : DialogFragment() {
         val url = binding.etLinkURL.text.toString()
         if (name.isBlank() || url.isBlank()) {
             requireContext().shortToast("Enter Something!")
+        } else if (!Patterns.WEB_URL.matcher(url).matches()) {
+            requireContext().shortToast("Link is Invalid!")
         } else {
             requireContext().shortToast("Updating item")
             linksViewModel.updateLink(LinkEntity(pk, name, url))

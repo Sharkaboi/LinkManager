@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -35,13 +34,14 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class LinksFragment : Fragment(), LinksAdapter.CustomListeners {
 
-    private val linksViewModel by viewModels<LinksViewModel>()
-    private lateinit var binding: FragmentLinksBinding
     private val navController: NavController by lazy { findNavController() }
+    private val linksViewModel by viewModels<LinksViewModel>()
+    private var _binding: FragmentLinksBinding? = null
+    private val binding get() = _binding!!
     private val clipboardManager by lazy { context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentLinksBinding.inflate(inflater, container, false)
+        _binding = FragmentLinksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -51,6 +51,11 @@ class LinksFragment : Fragment(), LinksAdapter.CustomListeners {
         setHasOptionsMenu(true)
         fabAddLink.setOnClickListener { openAddLinkDialog() }
         setupRecyclerView()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -85,12 +90,16 @@ class LinksFragment : Fragment(), LinksAdapter.CustomListeners {
     }
 
     override fun onOpenLink(linkURL: String) {
-        if(Patterns.WEB_URL.matcher(linkURL).matches()){
+        if (Patterns.WEB_URL.matcher(linkURL).matches()) {
             val browserIntent = Intent(Intent.ACTION_VIEW)
-            browserIntent.data = Uri.parse(linkURL)
+            if (!linkURL.startsWith("http://") && !linkURL.startsWith("https://")) {
+                browserIntent.data = Uri.parse("http://$linkURL")
+            } else {
+                browserIntent.data = Uri.parse(linkURL)
+            }
             startActivity(browserIntent)
             requireContext().shortToast("Opening Link")
-        }else{
+        } else {
             requireContext().shortToast("Link is Invalid and can't be opened!")
         }
     }

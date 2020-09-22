@@ -66,6 +66,7 @@ dependencies {
     //coroutines lifecycle scopes dependencies
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
     //Hilt dependencies
     implementation "com.google.dagger:hilt-android:2.28-alpha"
     kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
@@ -77,7 +78,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
-
 
     //design dependencies
     implementation 'com.google.android.material:material:1.2.1'
@@ -93,7 +93,11 @@ dependencies {
 
     //coil
     implementation 'io.coil-kt:coil:0.12.0'
+
     //api
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    
     //testing dependencies
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
     testImplementation 'junit:junit:4.12'

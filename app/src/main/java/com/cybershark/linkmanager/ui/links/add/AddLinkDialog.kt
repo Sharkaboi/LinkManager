@@ -1,6 +1,7 @@
 package com.cybershark.linkmanager.ui.links.add
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,17 +15,23 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddLinkDialog : DialogFragment() {
 
-    private lateinit var binding: FragmentAddDialogBinding
+    private var _binding: FragmentAddDialogBinding? = null
+    private val binding get() = _binding!!
     private val linksViewModel by viewModels<LinksViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentAddDialogBinding.inflate(inflater, container, false)
+        _binding = FragmentAddDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupListeners() {
@@ -37,9 +44,15 @@ class AddLinkDialog : DialogFragment() {
         val url = binding.etLinkURL.text.toString()
         if (name.isBlank() || url.isBlank()) {
             requireContext().shortToast("Enter Something!")
+        } else if (!Patterns.WEB_URL.matcher(url).matches()) {
+            requireContext().shortToast("Link is Invalid!")
         } else {
             requireContext().shortToast("Adding item")
-            linksViewModel.addLink(name, url)
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                linksViewModel.addLink(name, url)
+            } else {
+                linksViewModel.addLink(name, "http://$url")
+            }
             dismiss()
         }
     }

@@ -13,5 +13,5 @@ class Repository(private val linksDao: LinkDao) {
 
     suspend fun updateLink(linkEntity: LinkEntity) = linksDao.updateLink(linkEntity)
 
-    suspend fun deleteLink(linkEntity: LinkEntity) = linksDao.deleteLink(linkEntity)
+    suspend fun deleteLinkById(linkId: Int) = linksDao.deleteLinkById(linkId)
 }

@@ -18,20 +18,18 @@
     <string name="cancel">Cancel</string>
     <string name="no_links_added_n_to_add_links_press_the_button">No Links added! \n To Add links, press the + Button.</string>
     <string name="choose_an_option">Choose an option</string>
-    <string name="enter_details">Enter Details</string>
-    <string name="edit_details">Edit Details</string>
     <string name="enter_item_name">Enter Item name</string>
     <string name="enter_link">Enter Link</string>
-    <string name="add">Add to list</string>
 
     <!-- Preference Titles -->
     <string name="sync_header">Sync</string>
     <string name="edit">Edit</string>
-    <string name="about_detailed">An app to keep track of all your links.\n\nFeatures : \n\n* Can share all links in one go,\n* Upcoming : Bitly api integration,\n* Upcoming : Firebase Sync,\n* Upcoming : Share all links as a PDF,\n* Upcoming : Share the list with a single link,\n* Upcoming : Have multiple lists of links.\n</string>
+    <string name="about_detailed">An app to keep track of all your links.\nCan manage and share all links in one go.</string>
     <string name="delete_links">Delete All Links</string>
-    <string name="delete">delete</string>
+    <string name="delete">Delete</string>
     <string name="delete_alert">All links will be deleted! This is a permanent and cannot be reverted!</string>
-    <string name="update">Update</string>
     <string name="undo">Undo</string>
+    <string name="add_link">Add Link</string>
+    <string name="share_links">Share Links</string>
 
 </resources>

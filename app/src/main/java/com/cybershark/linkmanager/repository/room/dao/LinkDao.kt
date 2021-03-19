@@ -12,20 +12,12 @@ interface LinkDao {
     suspend fun insertLink(linkEntity: LinkEntity)
 
     //delete link entity
-    @Delete
-    suspend fun deleteLink(linkEntity: LinkEntity)
+    @Query("delete from links where pk=:linkId")
+    suspend fun deleteLinkById(linkId: Int)
 
     //update link entity
     @Update
     suspend fun updateLink(linkEntity: LinkEntity)
-
-    //get link by name
-    @Query("select * from links where linkName like '%' || :linkName || '%'")
-    suspend fun getLinkByName(linkName: String): LinkEntity
-
-    //get link by pk
-    @Query("select * from links where pk=:pk")
-    suspend fun getLinkByName(pk: Int): LinkEntity
 
     //get all links
     @Query("select * from links")

@@ -11,17 +11,26 @@
 </p>
 
 An app to keep track of all your links.
-
-## Features
-* Can share all links in go go
-* Upcoming : Bitly api integration
-* Upcoming : Firebase Sync
-* Upcoming : Share all links as a PDF
-* Upcoming : Share the list with a single link
-* Upcoming : Have multiple lists of links.
+Can manage and share all links in one go.
 
 ## Screenshots
 ![Showcase](https://i.imgur.com/zgHcydn.png)
+
+## Uses
+
+* Kotlin
+* MVVM Architecture
+* Room
+* ViewBinding
+* Coroutines
+* Hilt beta
+* MDC Library
+* KTX Extensions
+* Preference fragment
+* Coil
+* ConstraintLayout
+* LeakCanary
+
 
 ## Releases
 Check out all the releases [here](https://github.com/Sharkaboi/LinkManager/releases)

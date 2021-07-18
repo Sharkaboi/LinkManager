@@ -7,6 +7,5 @@ import com.cybershark.linkmanager.repository.room.entities.LinkEntity
 
 @Database(entities = [LinkEntity::class], exportSchema = true, version = 1)
 abstract class LinksDB : RoomDatabase() {
-
     abstract fun getDAO(): LinkDao
 }

@@ -7,9 +7,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,8 +23,7 @@ import com.cybershark.linkmanager.databinding.NavHeaderMainBinding
 import com.cybershark.linkmanager.repository.constants.Constants
 import com.cybershark.linkmanager.ui.links.viewmodels.LinksViewModel
 import com.cybershark.linkmanager.util.UIState
-import com.cybershark.linkmanager.util.makeGone
-import com.cybershark.linkmanager.util.makeVisible
+import com.cybershark.linkmanager.util.observe
 import com.cybershark.linkmanager.util.showToast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,55 +48,37 @@ class MainActivity : AppCompatActivity() {
         setObservers()
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
     private fun setUpNavigationDrawer() {
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawerLayout)
+        appBarConfiguration =
+            AppBarConfiguration(setOf(R.id.nav_home, R.id.nav_settings), binding.drawerLayout)
         binding.navView.setupWithNavController(navController)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         binding.navView.setNavigationItemSelectedListener {
-                when (it.itemId) {
-                    R.id.nav_bug_report -> openGithubIssues()
-                    R.id.nav_about -> openAboutDialog()
-                    R.id.nav_home -> openLinksFragment(it.itemId)
-                    R.id.nav_settings -> openSettingsFragment(it.itemId)
-                    R.id.action_share -> openShareOrCopyChooserDialog()
-                }
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            true
+            when (it.itemId) {
+                R.id.nav_bug_report -> openGithubIssues()
+                R.id.nav_about -> openAboutDialog()
+                R.id.nav_home -> openLinksFragment(it.itemId)
+                R.id.nav_settings -> openSettingsFragment(it.itemId)
+                R.id.action_share -> openShareOrCopyChooserDialog()
             }
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        }
     }
 
     private fun setObservers() {
-        linksViewModel.uiState.observe(this) { uiState ->
-            binding.contentLoadingScreen.makeGone()
-
+        observe(linksViewModel.uiState) { uiState ->
+            binding.contentLoadingScreen.isVisible = uiState is UIState.LOADING
             when (uiState) {
-                is UIState.LOADING -> {
-                    binding.contentLoadingScreen.makeVisible()
-                }
-                is UIState.ERROR -> {
-                    showToast(uiState.message)
-                }
+                is UIState.ERROR -> showToast(uiState.message)
                 is UIState.SUCCESS -> {
                     when (uiState.taskId) {
-                        "COPY" -> {
-                            copyLinks(uiState.message)
-                        }
-                        "SHARE" -> {
-                            shareLinks(uiState.message)
-                        }
-                        else -> {
-                            showToast(uiState.message)
-                        }
+                        COPY_ID -> copyLinks(uiState.message)
+                        SHARE_ID -> shareLinks(uiState.message)
+                        else -> showToast(uiState.message)
                     }
                 }
-                else -> {
-                    // do nothing
-                }
+                else -> Unit
             }
         }
     }
@@ -115,26 +96,9 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun copyToClipBoard() {
-        binding.contentLoadingScreen.makeVisible()
-        if (linksViewModel.linksList.value.isNullOrEmpty()) {
-            showToast("No links added!")
-            binding.contentLoadingScreen.makeGone()
-        } else {
-            linksViewModel.getAllLinksAsString("COPY")
-        }
-    }
+    private fun shareAsText() = linksViewModel.getAllLinksAsString(SHARE_ID)
 
-    private fun shareAsText() {
-        binding.contentLoadingScreen.makeVisible()
-
-        if (linksViewModel.linksList.value.isNullOrEmpty()) {
-            showToast("No links added!")
-            binding.contentLoadingScreen.makeGone()
-        } else {
-            linksViewModel.getAllLinksAsString("SHARE")
-        }
-    }
+    private fun copyToClipBoard() = linksViewModel.getAllLinksAsString(COPY_ID)
 
     private fun copyLinks(message: String) {
         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -188,5 +152,10 @@ class MainActivity : AppCompatActivity() {
         val githubIssuesIntent = Intent(Intent.ACTION_VIEW)
         githubIssuesIntent.data = Uri.parse(Constants.githubIssuesURL)
         startActivity(githubIssuesIntent)
+    }
+
+    companion object {
+        private const val COPY_ID = "COPY"
+        private const val SHARE_ID = "SHARE"
     }
 }

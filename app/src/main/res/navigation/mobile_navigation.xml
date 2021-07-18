@@ -9,11 +9,28 @@
         android:id="@+id/nav_home"
         android:name="com.cybershark.linkmanager.ui.links.views.LinksFragment"
         android:label="@string/menu_links"
-        tools:layout="@layout/fragment_links" />
+        tools:layout="@layout/fragment_links">
+        <action
+            android:id="@+id/openAddEditDialog"
+            app:destination="@id/addEditLinkBottomSheet" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.cybershark.linkmanager.ui.settings.SettingsFragment"
         android:label="@string/settings" />
+
+    <dialog
+        android:id="@+id/addEditLinkBottomSheet"
+        android:name="com.cybershark.linkmanager.ui.add_edit_links.ui.AddEditLinkBottomSheet"
+        android:label="AddEditLinkBottomSheet">
+        <argument
+            android:name="isAddDialog"
+            android:defaultValue="true"
+            app:argType="boolean" />
+        <argument
+            android:name="linkId"
+            app:argType="integer" />
+    </dialog>
 
 </navigation>

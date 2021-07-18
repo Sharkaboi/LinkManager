@@ -24,8 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:title="@string/app_name"
-                android:theme="@style/ThemeOverlay.MaterialComponents.Dark" />
+                android:theme="@style/ThemeOverlay.MaterialComponents.Dark"
+                app:title="@string/app_name" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,7 +51,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
         app:menu="@menu/activity_main_drawer" />
-
 
     <FrameLayout
         android:id="@+id/contentLoadingScreen"

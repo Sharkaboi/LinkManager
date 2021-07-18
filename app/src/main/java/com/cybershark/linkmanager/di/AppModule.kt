@@ -2,6 +2,7 @@ package com.cybershark.linkmanager.di
 
 import android.content.Context
 import androidx.room.Room
+import com.cybershark.linkmanager.repository.IRepository
 import com.cybershark.linkmanager.repository.Repository
 import com.cybershark.linkmanager.repository.room.dao.LinkDao
 import com.cybershark.linkmanager.repository.room.db.LinksDB
@@ -26,13 +27,9 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun getRoomDao(linksDB: LinksDB): LinkDao {
-        return linksDB.getDAO()
-    }
+    fun getRoomDao(linksDB: LinksDB): LinkDao = linksDB.getDAO()
 
     @Singleton
     @Provides
-    fun getRepository(linkDao: LinkDao): Repository {
-        return Repository(linkDao)
-    }
+    fun getRepository(linkDao: LinkDao): IRepository = Repository(linkDao)
 }

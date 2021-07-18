@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "links")
 data class LinkEntity(
     @PrimaryKey(autoGenerate = true)
-    val pk : Int = 0 ,
-    @ColumnInfo(name = "linkName",defaultValue = "")
-    val linkName : String,
-    @ColumnInfo(name = "linkURL",defaultValue = "")
-    val linkURL : String
+    val pk: Int = 0,
+    @ColumnInfo(name = "linkName", defaultValue = "")
+    val linkName: String,
+    @ColumnInfo(name = "linkURL", defaultValue = "")
+    val linkURL: String
 )

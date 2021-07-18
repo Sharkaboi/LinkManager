@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import com.cybershark.linkmanager.R
 import com.cybershark.linkmanager.databinding.AddEditBottomSheetBinding
 import com.cybershark.linkmanager.repository.room.entities.LinkEntity
@@ -12,16 +13,16 @@ import com.cybershark.linkmanager.ui.links.viewmodels.LinksViewModel
 import com.cybershark.linkmanager.util.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class AddEditLinkBottomSheet : BottomSheetDialogFragment() {
-    private var linkId by Delegates.notNull<Int>()
+    private val args by navArgs<AddEditLinkBottomSheetArgs>()
+    private val linkId by lazy { args.linkId }
+    private val isAddDialog by lazy { args.isAddDialog }
     private var currentLink: LinkEntity? = null
-    private val linksViewModel by viewModels<LinksViewModel>()
+    private val linksViewModel by activityViewModels<LinksViewModel>()
     private var _binding: AddEditBottomSheetBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,15 +40,14 @@ class AddEditLinkBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getArgs()
+        setupDialog()
     }
 
-    private fun getArgs() {
-        if (arguments != null && arguments?.containsKey(EXTRAS_KEY) == true) {
-            linkId = requireArguments().getInt(EXTRAS_KEY)
-            setupEditDialog()
-        } else {
+    private fun setupDialog() {
+        if (isAddDialog) {
             setupAddDialog()
+        } else {
+            setupEditDialog()
         }
     }
 
@@ -84,26 +84,5 @@ class AddEditLinkBottomSheet : BottomSheetDialogFragment() {
             dismiss()
         }
 
-    }
-
-
-    companion object {
-        const val TAG = "AddOrEditLinkDialog"
-        private const val EXTRAS_KEY = "linkId"
-        const val EDIT = true
-        const val ADD = false
-
-        fun getInstance(action: Boolean, id: Int = 0): AddEditLinkBottomSheet {
-            return if (action == EDIT) {
-                val args = Bundle().apply {
-                    putInt(EXTRAS_KEY, id)
-                }
-                AddEditLinkBottomSheet().apply {
-                    arguments = args
-                }
-            } else {
-                AddEditLinkBottomSheet()
-            }
-        }
     }
 }

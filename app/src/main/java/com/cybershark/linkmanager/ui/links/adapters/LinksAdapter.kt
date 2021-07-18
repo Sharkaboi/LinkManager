@@ -17,8 +17,7 @@ class LinksAdapter(
     class LinksViewHolder(
         private val binding: LinkItemBinding,
         private val customListeners: CustomListeners
-    ) :
-        RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(linkEntity: LinkEntity) {
             binding.tvLinkName.text = linkEntity.linkName
@@ -58,9 +57,7 @@ class LinksAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return listDiffer.currentList.size
-    }
+    override fun getItemCount(): Int = listDiffer.currentList.size
 
     override fun onBindViewHolder(holder: LinksViewHolder, position: Int) {
         holder.bind(listDiffer.currentList[position])

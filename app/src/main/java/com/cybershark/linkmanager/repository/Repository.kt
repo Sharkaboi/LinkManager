@@ -1,17 +1,68 @@
 package com.cybershark.linkmanager.repository
 
+import androidx.lifecycle.LiveData
 import com.cybershark.linkmanager.repository.room.dao.LinkDao
 import com.cybershark.linkmanager.repository.room.entities.LinkEntity
+import com.cybershark.linkmanager.ui.links.viewmodels.LinksViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class Repository(private val linksDao: LinkDao) {
+class Repository(private val linksDao: LinkDao) : IRepository {
 
-    val allLinks = linksDao.getAllLinks()
+    override val allLinks: LiveData<List<LinkEntity>> = linksDao.getAllLinks()
 
-    suspend fun insertLink(linkEntity: LinkEntity) = linksDao.insertLink(linkEntity)
+    override suspend fun insertLink(linkEntity: LinkEntity): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                linksDao.insertLink(linkEntity)
+                return@withContext Result.success(Unit)
+            } catch (e: Exception) {
+                return@withContext Result.failure(e)
+            }
+        }
 
-    suspend fun deleteAllLinks() = linksDao.deleteAllLinks()
+    override suspend fun deleteAllLinks(): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            linksDao.deleteAllLinks()
+            return@withContext Result.success(Unit)
+        } catch (e: Exception) {
+            return@withContext Result.failure(e)
+        }
+    }
 
-    suspend fun updateLink(linkEntity: LinkEntity) = linksDao.updateLink(linkEntity)
+    override suspend fun updateLink(linkEntity: LinkEntity): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+                linksDao.updateLink(linkEntity)
+                return@withContext Result.success(Unit)
+            } catch (e: Exception) {
+                return@withContext Result.failure(e)
+            }
+        }
 
-    suspend fun deleteLinkById(linkId: Int) = linksDao.deleteLinkById(linkId)
+    override suspend fun deleteLinkById(linkId: Int): Result<Unit> = withContext(Dispatchers.IO) {
+        try {
+            linksDao.deleteLinkById(linkId)
+            return@withContext Result.success(Unit)
+        } catch (e: Exception) {
+            return@withContext Result.failure(e)
+        }
+    }
+
+    override suspend fun getAllLinksAsString(): Result<String> = withContext(Dispatchers.Default) {
+        try {
+            if (allLinks.value.isNullOrEmpty()) {
+                return@withContext Result.failure(Exception("No links added!"))
+            }
+            val string = buildString {
+                append(LinksViewModel.START_MESSAGE)
+                allLinks.value?.forEach {
+                    append("${it.linkName} - ${it.linkURL}\n")
+                }
+            }
+            return@withContext Result.success(string)
+        } catch (e: Exception) {
+            return@withContext Result.failure(e)
+        }
+    }
 }

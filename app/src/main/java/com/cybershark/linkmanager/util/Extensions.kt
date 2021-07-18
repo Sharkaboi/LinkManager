@@ -24,10 +24,6 @@ fun MutableLiveData<UIState>.setError(error: Throwable?): MutableLiveData<UIStat
     return this.apply { value = UIState.ERROR(error?.message ?: "An error occurred") }
 }
 
-fun MutableLiveData<UIState>.setError(error: String): MutableLiveData<UIState> {
-    return this.apply { value = UIState.ERROR(error) }
-}
-
 internal fun AppCompatActivity.showToast(message: String, length: Int = Toast.LENGTH_SHORT) =
     Toast.makeText(this, message, length).show()
 

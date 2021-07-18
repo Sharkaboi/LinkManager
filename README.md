@@ -2,8 +2,8 @@
 <p align="left">
     <a href="https://github.com/Sharkaboi/LinkManager/actions?query=workflow%3A%22Gradle+Build%22" alt="Gradle Build">
         <img src="https://github.com/Sharkaboi/LinkManager/workflows/Gradle%20Build/badge.svg?branch=master" /></a>
-    <a href="https://github.com/JetBrains/kotlin/releases/tag/v1.3.72" alt="Kotlin">
-        <img src="https://img.shields.io/badge/Kotlin-1.4.31-blue" /></a>
+    <a href="https://github.com/JetBrains/kotlin/releases/tag/v1.5.21" alt="Kotlin">
+        <img src="https://img.shields.io/badge/Kotlin-1.5.21-blue" /></a>
     <a href="https://github.com/Sharkaboi/LinkManager/blob/master/LICENSE" alt="License">
         <img src="https://img.shields.io/badge/License-MIT-orange" /></a>
     <a href="https://github.com/Sharkaboi/LinkManager/graphs/contributors" alt="Contributors">
@@ -23,7 +23,8 @@ Can manage and share all links in one go.
 * Room
 * ViewBinding
 * Coroutines
-* Hilt beta
+* Hilt
+* Jetpack navigation and SafeArgs
 * MDC Library
 * KTX Extensions
 * Preference fragment
